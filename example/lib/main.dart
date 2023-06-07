@@ -72,16 +72,20 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     iCloudStorage.onCloudKitKVUpdateCallBack(
       onCallBack: (kvMap) {
-        print('receive icloud_key_update');
-        if (kvMap[iCloudStorage.getRealKey('k_storage_count')] != null) {
+        print('receive icloud_key_update map $kvMap');
+        //if receive remove key will rec {flutter.k_storage_count: null}
+        //if receive update key will rec {flutter.k_storage_count: 1}
+        //because have prefix flutter. so need use my method to get real key.
+        var key = iCloudStorage.getRealKey('k_storage_count');
+        if (kvMap.containsKey(key)) {
+          String? value = kvMap[key];
           setState(() {
-            _counter =
+            if (value != null) {
+              _counter =
                 int.parse(kvMap[iCloudStorage.getRealKey('k_storage_count')]);
-          });
-        } else {
-          //may removed
-          setState(() {
-            _counter = 0;
+            } else {
+              _counter = 0;
+            }
           });
         }
       },
