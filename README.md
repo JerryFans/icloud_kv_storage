@@ -2,23 +2,89 @@
 
 A Key Value Storage Flutter Plugin Sync multiple iOS & Mac Devices base on iCloud.
 
-## Getting Started
+![Snip20230607_1](https://github.com/JerryFans/icloud_kv_storage/assets/14149080/3c622c18-f5d7-49b2-a2ff-2e63634229b6)
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Usage
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+NOTE: It is recommended to use real device testing for iOS devices as the iOS simulator may not synchronize in real-time. Mac devices can be compiled and tested directly. Only the same iCloud account needs to be logged in on different Apple devices to synchronize lightweight Key Value data.
 
-The plugin project was generated without specifying the `--platforms` flag, no platforms are currently supported.
-To add platforms, run `flutter create -t plugin --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
+- FirstStep:
+
+Enable your iOS Or Mac Project iCloud Key Value Services.
+
+![image](https://github.com/JerryFans/icloud_kv_storage/assets/14149080/09325cd2-ac57-4e27-a716-e819c06d3a69)
+
+- And Then Enjoy It.
+
+Sample Code.
+
+```
+import 'package:icloud_kv_storage/icloud_kv_storage.dart';
+
+var iCloudStorage = CKKVStorage();
+```
+
+Update A Key
+
+```
+void _incrementCounter() {
+    setState(() {
+      _counter++;
+      iCloudStorage.writeString(key: key, value: _counter.toString());
+    });
+  }
+
+```
+
+Read A Key
+
+```
+iCloudStorage.getString('k_storage_count').then((value) {
+      if (value != null) {
+        setState(() {
+          _counter = int.parse(value);
+        });
+      }
+    });
+```
+
+Delete A Key
+```
+void _clearCounter() {
+    setState(() {
+      _counter = 0;
+      iCloudStorage.delete(key);
+    });
+  }
+```
+
+Real Time Call Back Key Value Update on other devices 
+```
+iCloudStorage.onCloudKitKVUpdateCallBack(
+      onCallBack: (kvMap) {
+        print('receive icloud_key_update');
+        if (kvMap[iCloudStorage.getRealKey('k_storage_count')] != null) {
+          setState(() {
+            _counter =
+                int.parse(kvMap[iCloudStorage.getRealKey('k_storage_count')]);
+          });
+        } else {
+          //may removed
+          setState(() {
+            _counter = 0;
+          });
+        }
+      },
+    );
+```
 
 ## Release Log
 
 ### 0.0.1
 
 Based on Apple CloudKit, lightweight Key value storage data can be synchronized between different Apple devices, such as iOS and Mac devices. For the time being, only String data can be synchronized.
+
+## Future
+
+Currently, only String data is supported, and basic data types such as int and double will be added in the future
+ 
