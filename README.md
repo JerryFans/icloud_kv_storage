@@ -4,6 +4,8 @@ A Key Value Storage Flutter Plugin Sync multiple iOS & Mac Devices base on iClou
 
 ![Snip20230607_1](https://github.com/JerryFans/icloud_kv_storage/assets/14149080/3c622c18-f5d7-49b2-a2ff-2e63634229b6)
 
+![Screen-2023-06-07-231010](https://github.com/JerryFans/icloud_kv_storage/assets/14149080/64556c9d-397f-4ef2-b615-1eebfd972592)
+
 ## Usage
 
 NOTE: It is recommended to use real device testing for iOS devices as the iOS simulator may not synchronize in real-time. Mac devices can be compiled and tested directly. Only the same iCloud account needs to be logged in on different Apple devices to synchronize lightweight Key Value data.
